@@ -13,6 +13,8 @@ You can easily add numpy.ndarray.shape to your script as comment.
 `python -m shape_commentator src.py arg1 arg2`
 
 2. You get the commented script. For example, you execute shape_commentator to `src.py`, you get `src.py.commented.py`.
+![src](https://user-images.githubusercontent.com/13820488/49359824-a4bf2200-f71a-11e8-93f2-b1d916e9cf3b.PNG)
+![src_commented](https://user-images.githubusercontent.com/13820488/49359827-a688e580-f71a-11e8-9e15-9ee509aca238.PNG)
 
 ### Jupyter
 1. Execute the cell that you want to see shape.
@@ -21,3 +23,4 @@ You can easily add numpy.ndarray.shape to your script as comment.
 import shape_commentator
 shape_commentator.comment(In[len(In)-2],globals(),locals())
 ```
+![jupyter](https://user-images.githubusercontent.com/13820488/49359830-a852a900-f71a-11e8-89b8-1c7b9ea17343.PNG)
