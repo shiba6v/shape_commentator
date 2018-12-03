@@ -1,9 +1,6 @@
-import numpy as np
 import ast
-import json
 import sys
 import copy
-import os
 
 initialize_code = """
 SHAPE_COMMENTATOR_RESULT = {}
@@ -28,11 +25,6 @@ def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
         else:
             result += str(type(tpl)) + ","
     return result
-"""
-
-json_output_code = """
-import json
-json.dump(SHAPE_COMMENTATOR_RESULT,open('SHAPE_COMMENTATOR_result.json','w'))
 """
 
 class ShapeNodeTransformer(ast.NodeTransformer):
@@ -105,29 +97,20 @@ class ShapeNodeTransformer(ast.NodeTransformer):
 def execute(source,globals={},locals={}):
     tree = ast.parse(source)
     ShapeNodeTransformer().visit(tree)
-    trytree = ast.Try(ast.parse(initialize_code).body + tree.body, 
-                      [],
-                      [],
-                      ast.parse(json_output_code).body,
-                      lineno=0,
-                      col_offset=0
-                    )
-    tree.body = [trytree]
+    tree.body = ast.parse(initialize_code).body + tree.body
     code = compile(tree,'<string>','exec')
     exec(code,globals,locals)
 
 # ソース名.commented.pyにコメント付きソースコードを出力．
-def write_comment(source,filename="src.py"):
+def write_comment(source,SHAPE_COMMENTATOR_RESULT,filename="src.py"):
     with open(filename+".commented.py", "w") as f_w:
-        with open('SHAPE_COMMENTATOR_result.json') as f_json:
-            comment_dict = json.load(f_json)
-            for idx,line in enumerate(source.split("\n")):
-                key = str(idx+1)
-                if key in comment_dict:
-                    new_line = line.split("  #_ ")
-                    f_w.write(new_line[0]+"  #_ " + comment_dict[key] + "\n")
-                else:
-                    f_w.write(line+"\n")
+        for idx,line in enumerate(source.split("\n")):
+            key = str(idx+1)
+            if key in SHAPE_COMMENTATOR_RESULT:
+                new_line = line.split("  #_ ")
+                f_w.write(new_line[0]+"  #_ " + SHAPE_COMMENTATOR_RESULT[key] + "\n")
+            else:
+                f_w.write(line+"\n")
 
 # Jupyter Notebook上で前のセルを簡単にコメントする
 def comment(source, globals, locals):
@@ -136,15 +119,13 @@ def comment(source, globals, locals):
     try:
         execute(source, globals, locals)
     finally:
-        with open('SHAPE_COMMENTATOR_result.json') as f_json:
-            comment_dict = json.load(f_json)
-            for idx,line in enumerate(source.split("\n")):
-                key = str(idx+1)
-                if key in comment_dict:
-                    new_line = line.split("  #_ ")
-                    print(new_line[0]+"  #_ " + comment_dict[key])
-                else:
-                    print(line)
+        for idx,line in enumerate(source.split("\n")):
+            key = str(idx+1)
+            if key in SHAPE_COMMENTATOR_RESULT:
+                new_line = line.split("  #_ ")
+                print(new_line[0]+"  #_ " + SHAPE_COMMENTATOR_RESULT[key])
+            else:
+                print(line)
 
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
@@ -156,12 +137,11 @@ if __name__ == '__main__':
     filename = sys.argv[1]
     with open(filename) as f:
         source = f.read()
-        # agv[]
-        # コマンドライン引数を正しく扱う
         for i in range(len(sys.argv)-1):
             sys.argv[i] = sys.argv[i+1]
         del sys.argv[len(sys.argv)-1]
         try:
             execute(source,globals(),locals())
         finally:
-            write_comment(source, filename)
+            print(SHAPE_COMMENTATOR_RESULT)
+            write_comment(source, SHAPE_COMMENTATOR_RESULT, filename)
