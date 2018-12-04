@@ -3,7 +3,6 @@ import sys
 import copy
 
 initialize_code = """
-SHAPE_COMMENTATOR_RESULT = {}
 def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
     class SHAPE_COMMENTATOR_tuple_unpacker_endmark:
         pass
@@ -93,41 +92,58 @@ class ShapeNodeTransformer(ast.NodeTransformer):
         node_record.value = self.call_tuple_unpacker(node_orig.lineno, node_orig.col_offset, )
         return [node_store_tmp,node_orig,node_record]
 
-# TODO 一度検査した行は通らないようにしたい
-def execute(source,globals={},locals={}):
+def code_compile(source):
+    r"""
+    >>> SHAPE_COMMENTATOR_RESULT={};code_compile('import numpy as np\na = np.array([1,2,3,4,5,6])').co_code
+    b'd\x00d\x01\x84\x00Z\x00d\x02d\x03l\x01Z\x02e\x02j\x03d\x04d\x05d\x06d\x07d\x08d\tg\x06\x83\x01Z\x04e\x04Z\x05e\x00e\x04\x83\x01e\x06d\n<\x00d\x03S\x00'
+    """
     tree = ast.parse(source)
     ShapeNodeTransformer().visit(tree)
     tree.body = ast.parse(initialize_code).body + tree.body
     code = compile(tree,'<string>','exec')
-    exec(code,globals,locals)
+    return code
 
-# ソース名.commented.pyにコメント付きソースコードを出力．
-def write_comment(source,SHAPE_COMMENTATOR_RESULT,filename="src.py"):
-    with open(filename+".commented.py", "w") as f_w:
-        for idx,line in enumerate(source.split("\n")):
-            key = str(idx+1)
-            if key in SHAPE_COMMENTATOR_RESULT:
-                new_line = line.split("  #_ ")
-                f_w.write(new_line[0]+"  #_ " + SHAPE_COMMENTATOR_RESULT[key] + "\n")
-            else:
-                f_w.write(line+"\n")
+# TODO 一度検査した行は通らないようにしたい
+def execute(source,globals={},locals={}):
+    r"""
+    >>> SHAPE_COMMENTATOR_RESULT={};execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
+    {'2': '(6,),'}
+    """
+    code = code_compile(source)
+    exec(code, globals, locals)
 
 # Jupyter Notebook上で前のセルを簡単にコメントする
 def comment(source, globals, locals):
+    r"""
+    >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])','print("delete_this")'];comment(In[len(In)-2],globals(),locals())
+    import numpy as np
+    a = np.array([1,2,3,4,5,6])  #_ (6,),
+    """
     # commentを呼んだセルに対してcommentを呼ばれると厄介なので消す
-    exec("In[len(In)-1] = ' '",globals,locals)
+    exec("In[len(In)-1] = ''", globals, locals)
+    # globals, localsを乗っ取っているので，このライブラリ内で宣言された変数は引き継がれない．
+    locals['SHAPE_COMMENTATOR_RESULT'] = {}
     try:
         execute(source, globals, locals)
     finally:
-        for idx,line in enumerate(source.split("\n")):
-            key = str(idx+1)
-            if key in SHAPE_COMMENTATOR_RESULT:
-                new_line = line.split("  #_ ")
-                print(new_line[0]+"  #_ " + SHAPE_COMMENTATOR_RESULT[key])
-            else:
-                print(line)
+        write_comment(source, locals['SHAPE_COMMENTATOR_RESULT'], print)
 
-if __name__ == '__main__':
+# ソース名.commented.pyにコメント付きソースコードを出力．
+def write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func):
+    r"""
+    >>> write_comment('import numpy as np\na = np.array([1,2,3,4,5,6])', {'2': '(6,),'}, print)
+    import numpy as np
+    a = np.array([1,2,3,4,5,6])  #_ (6,),
+    """
+    for idx,line in enumerate(source.split("\n")):
+        key = str(idx+1)
+        if key in SHAPE_COMMENTATOR_RESULT:
+            new_line = line.split("  #_ ")
+            output_func(new_line[0]+"  #_ " + SHAPE_COMMENTATOR_RESULT[key])
+        else:
+            output_func(line)
+
+def main():
     if len(sys.argv) <= 1:
         print("Please set filename")
         print("example:")
@@ -140,8 +156,13 @@ if __name__ == '__main__':
         for i in range(len(sys.argv)-1):
             sys.argv[i] = sys.argv[i+1]
         del sys.argv[len(sys.argv)-1]
+        SHAPE_COMMENTATOR_RESULT = {}
         try:
             execute(source,globals(),locals())
         finally:
-            print(SHAPE_COMMENTATOR_RESULT)
-            write_comment(source, SHAPE_COMMENTATOR_RESULT, filename)
+            with open(filename+".commented.py", "w") as f_w:
+                output_func = lambda x: f_w.write(x + "\n")
+                write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func)
+
+if __name__ == '__main__':
+    main()

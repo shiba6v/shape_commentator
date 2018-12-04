@@ -1,8 +1,7 @@
 # Shape Commentator
 
 ## About
-You can easily add numpy.ndarray.shape to your script as comment.
-
+You can easily add numpy.ndarray.shape information to your script as comments.
 
 ## Usage
 ### CLI
@@ -24,3 +23,9 @@ import shape_commentator
 shape_commentator.comment(In[len(In)-2],globals(),locals())
 ```
 ![jupyter](https://user-images.githubusercontent.com/13820488/49359830-a852a900-f71a-11e8-89b8-1c7b9ea17343.PNG)
+
+## Development
+### Test
+```
+python -m doctest shape_commentator.py
+```
