@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name="shape_commentator",
     packages=["shape_commentator"],
-    version="0.1.0",
+    version="0.1.1",
     description="You can easily add numpy.ndarray.shape information to your script as comments.",
     author="shiba6v",
     author_email="shiba6v@gmail.com",
