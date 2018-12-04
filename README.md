@@ -3,6 +3,11 @@
 ## About
 You can easily add numpy.ndarray.shape information to your script as comments.
 
+## Installation
+```bash
+pip install shape_commentator
+```
+
 ## Usage
 ### CLI
 1. Run this script as a module with argument of script name.  Command line arguments to the target script are available.
