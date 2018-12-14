@@ -119,7 +119,6 @@ def comment(source, globals, locals=None):
     import numpy as np
     a = np.array([1,2,3,4,5,6])  #_ (6,),
     """
-    print("a")
     # commentを呼んだセルに対してcommentを呼ばれると厄介なので消す
     exec("In[len(In)-1] = ''", globals)
     # globalsを乗っ取っているので，このライブラリ内で宣言された変数は引き継がれない．
