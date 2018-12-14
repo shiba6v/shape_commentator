@@ -104,7 +104,7 @@ def code_compile(source):
     return code
 
 # TODO 一度検査した行は通らないようにしたい
-def execute(source,globals={},locals={}):
+def execute(source,globals=None,locals=None):
     r"""
     >>> SHAPE_COMMENTATOR_RESULT={};execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
     {'2': '(6,),'}
@@ -156,9 +156,10 @@ def main():
         for i in range(len(sys.argv)-1):
             sys.argv[i] = sys.argv[i+1]
         del sys.argv[len(sys.argv)-1]
+        global SHAPE_COMMENTATOR_RESULT
         SHAPE_COMMENTATOR_RESULT = {}
         try:
-            execute(source,globals(),locals())
+            execute(source,globals())
         finally:
             with open(filename+".commented.py", "w") as f_w:
                 output_func = lambda x: f_w.write(x + "\n")
