@@ -104,7 +104,7 @@ def code_compile(source):
     return code
 
 # TODO 一度検査した行は通らないようにしたい
-def execute(source,globals={},locals={}):
+def execute(source,globals,locals=None):
     r"""
     >>> SHAPE_COMMENTATOR_RESULT={};execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
     {'2': '(6,),'}
@@ -113,20 +113,20 @@ def execute(source,globals={},locals={}):
     exec(code, globals, locals)
 
 # Jupyter Notebook上で前のセルを簡単にコメントする
-def comment(source, globals, locals):
+def comment(source, globals, locals=None):
     r"""
     >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])','print("delete_this")'];comment(In[len(In)-2],globals(),locals())
     import numpy as np
     a = np.array([1,2,3,4,5,6])  #_ (6,),
     """
     # commentを呼んだセルに対してcommentを呼ばれると厄介なので消す
-    exec("In[len(In)-1] = ''", globals, locals)
-    # globals, localsを乗っ取っているので，このライブラリ内で宣言された変数は引き継がれない．
-    locals['SHAPE_COMMENTATOR_RESULT'] = {}
+    exec("In[len(In)-1] = ''", globals)
+    # globalsを乗っ取っているので，このライブラリ内で宣言された変数は引き継がれない．
+    globals['SHAPE_COMMENTATOR_RESULT'] = {}
     try:
-        execute(source, globals, locals)
+        execute(source, globals)
     finally:
-        write_comment(source, locals['SHAPE_COMMENTATOR_RESULT'], print)
+        write_comment(source, globals['SHAPE_COMMENTATOR_RESULT'], print)
 
 # ソース名.commented.pyにコメント付きソースコードを出力．
 def write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func):
@@ -156,9 +156,10 @@ def main():
         for i in range(len(sys.argv)-1):
             sys.argv[i] = sys.argv[i+1]
         del sys.argv[len(sys.argv)-1]
+        global SHAPE_COMMENTATOR_RESULT
         SHAPE_COMMENTATOR_RESULT = {}
         try:
-            execute(source,globals(),locals())
+            execute(source,globals())
         finally:
             with open(filename+".commented.py", "w") as f_w:
                 output_func = lambda x: f_w.write(x + "\n")
