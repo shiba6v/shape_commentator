@@ -1,0 +1,9 @@
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.6
+    steps:
+      - checkout
+      - run: 
+          name: Tests
+          command: python -m doctest shape_commentator/shape_commentator.py
