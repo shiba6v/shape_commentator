@@ -31,3 +31,9 @@ jobs:
             echo -e "username = shiba6v" >> ~/.pypirc
             echo -e "password = $TESTPYPI_PASSWORD" >> ~/.pypirc
             twine upload --repository testpypi dist/*
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build
+      - deploy-test
