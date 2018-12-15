@@ -41,7 +41,7 @@ jobs:
           command: |
             python setup.py sdist
             echo -e "[pypi]" >> ~/.pypirc
-            echo -e "repository=https://test.pypi.org/legacy/" >> ~/.pypirc
+            echo -e "repository=https://upload.pypi.org/legacy/" >> ~/.pypirc
             echo -e "username = shiba6v" >> ~/.pypirc
             echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
             twine upload --repository pypi dist/*
