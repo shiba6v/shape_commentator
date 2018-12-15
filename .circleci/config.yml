@@ -50,6 +50,9 @@ workflows:
   build-and-test:
     jobs:
       - test
+          filters:
+              tags:
+                  only: /^v_.*/
       - deploy-test:
           requires:
             - test
