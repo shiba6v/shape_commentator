@@ -12,9 +12,6 @@ jobs:
           name: Tests
           command: python -m doctest shape_commentator/shape_commentator.py
       - run:
-          name: Verify setup.py
-          command: python setup.py verify
-      - run:
           name: TestPyPI
           command: |
             python setup.py sdist
