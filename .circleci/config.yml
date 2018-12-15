@@ -6,17 +6,28 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install
-          command: sudo pip install numpy twine
+        name: Install
+        command: sudo pip install numpy
       - run: 
-          name: Tests
-          command: python -m doctest shape_commentator/shape_commentator.py
+        name: Tests
+        command: python -m doctest shape_commentator/shape_commentator.py
+  deploy-test:
+    docker:
+      - image: circleci/python:3.6.6
+    branches:
+      only:
+        - master
+    steps:
+      - checkout
       - run:
-          name: TestPyPI
-          command: |
-            python setup.py sdist
-            echo -e "[testpypi]" >> ~/.pypirc
-            echo -e "repository=https://testpypi.python.org/legacy/" >> ~/.pypirc
-            echo -e "username = shiba6v" >> ~/.pypirc
-            echo -e "password = $TESTPYPI_PASSWORD" >> ~/.pypirc
-            twine upload --repository testpypi dist/*
+        name: Install
+        command: sudo pip install twine
+      - run:
+        name: TestPyPI
+        command: |
+          python setup.py sdist
+          echo -e "[testpypi]" >> ~/.pypirc
+          echo -e "repository=https://testpypi.python.org/legacy/" >> ~/.pypirc
+          echo -e "username = shiba6v" >> ~/.pypirc
+          echo -e "password = $TESTPYPI_PASSWORD" >> ~/.pypirc
+          twine upload --repository testpypi dist/*
