@@ -7,7 +7,19 @@ jobs:
       - checkout
       - run:
           name: Install
-          command: sudo pip install numpy
+          command: sudo pip install numpy twine
       - run: 
           name: Tests
           command: python -m doctest shape_commentator/shape_commentator.py
+      - run:
+          name: Verify setup.py
+          command: python setup.py verify
+      - run:
+          name: TestPyPI
+          command: |
+            python setup.py sdist
+            echo -e "[testpypi]" >> ~/.pypirc
+            echo -e "repository=https://testpypi.python.org/legacy/" >> ~/.pypirc
+            echo -e "username = shiba6v" >> ~/.pypirc
+            echo -e "password = $TESTPYPI_PASSWORD" >> ~/.pypirc
+            twine upload --repository testpypi dist/*
