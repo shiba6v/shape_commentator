@@ -61,5 +61,7 @@ workflows:
           requires:
             - test
           filters:
+              branches:
+                  ignore: /.*/
               tags:
                   only: /^v_.*/
