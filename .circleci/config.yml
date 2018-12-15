@@ -33,7 +33,7 @@ workflows:
   build-and-test:
     jobs:
       - test
-      - deploy-test
+      - deploy-test:
           requires:
             - test
           filters:
