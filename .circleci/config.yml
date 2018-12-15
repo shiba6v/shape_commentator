@@ -62,5 +62,4 @@ workflows:
             - test
           filters:
               tags:
-                  only:
-                    - /^v_.*/
+                  only: /^v_.*/
