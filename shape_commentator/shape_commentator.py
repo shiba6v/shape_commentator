@@ -93,10 +93,6 @@ class ShapeNodeTransformer(ast.NodeTransformer):
         return [node_store_tmp,node_orig,node_record]
 
 def code_compile(source):
-    r"""
-    >>> SHAPE_COMMENTATOR_RESULT={};code_compile('import numpy as np\na = np.array([1,2,3,4,5,6])').co_code
-    b'd\x00d\x01\x84\x00Z\x00d\x02d\x03l\x01Z\x02e\x02j\x03d\x04d\x05d\x06d\x07d\x08d\tg\x06\x83\x01Z\x04e\x04Z\x05e\x00e\x04\x83\x01e\x06d\n<\x00d\x03S\x00'
-    """
     tree = ast.parse(source)
     ShapeNodeTransformer().visit(tree)
     tree.body = ast.parse(initialize_code).body + tree.body
