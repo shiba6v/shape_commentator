@@ -2,8 +2,7 @@ from setuptools import setup
 import os
 import subprocess
 
-# N.N.Nをリリースした後，すぐにここをN.N.(N+1)に変える．
-VERSION = "0.2.1"
+VERSION = "0.1.4"
 
 def get_test_version():
     import requests
@@ -15,7 +14,7 @@ def get_test_version():
     return version_test
 
 # $TEST_RELEASE_HASHで短いコミット番号を確認して，意図したバージョンのテストリリースであることを確認．
-# TestPyPIでリリースバージョンが被ってCIがコケるのを防ぐためにdev番号を付与．
+# TestPyPIでリリースバージョンが被ってCIがコケるのを防ぐためにpost番号を付与．
 GIT_HASH = subprocess.check_output("git rev-parse --short HEAD".split()).strip().decode()
 if "TESTPYPI_PASSWORD" in os.environ and\
     "TEST_RELEASE_HASH" in os.environ and\
@@ -25,11 +24,11 @@ if "TESTPYPI_PASSWORD" in os.environ and\
         # マイナーバージョン以上のアップデートを入れた時は，devを付けずにテストリリース
         pass
     elif len(previous_version) != 2:
-        # 直前が本リリースの時は，dev0としてテストリリース
-        VERSION += ".dev0"
+        # 直前が本リリースの時は，post0としてテストリリース
+        VERSION += ".post0"
     else:
-        # 直前にN.N.N.devNのテストリリースをTestPyPIで行った時に，dev(N+1)としてテストリリース．
-        VERSION += ".dev" + str(int(previous_version[1])+1)
+        # 直前にN.N.N.postNのテストリリースをTestPyPIで行った時に，post(N+1)としてテストリリース．
+        VERSION += ".post" + str(int(previous_version[1])+1)
 
 setup(
     name="shape_commentator",
