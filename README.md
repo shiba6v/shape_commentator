@@ -9,6 +9,12 @@ You can easily add numpy.ndarray.shape information to your script as comments.
 pip install shape_commentator
 ```
 
+### Tested Python Version  
+Test script must be written in these version of Python.
+- 3.6.6
+- 3.5.6
+- 3.4.9
+
 ## Usage  
 ### CLI
 1. Run this script as a module with argument of script name.  Command line arguments to the target script are available.
@@ -32,10 +38,6 @@ shape_commentator.comment(In[len(In)-2],globals(),locals())
 
 ## Development  
 ### Python Main Version in Development  
-- 3.6.6
-
-### Python Tested Version  
-Test script must be written in these version of Python.
 - 3.6.6
 
 ### Prerequisities
