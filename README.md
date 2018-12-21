@@ -16,7 +16,7 @@ pip install shape_commentator
 
 `python -m shape_commentator src.py arg1 arg2`
 
-2. You get the commented script. For example, you execute shape_commentator to `src.py`, you get `src.py.commented.py`.
+2. You get the commented script. For example, you execute shape_commentator to `src.py`, you get `src.py.commented.py`.  
 ![src](https://user-images.githubusercontent.com/13820488/49359824-a4bf2200-f71a-11e8-93f2-b1d916e9cf3b.PNG)  
 ![src_commented](https://user-images.githubusercontent.com/13820488/49359827-a688e580-f71a-11e8-9e15-9ee509aca238.PNG)   
 

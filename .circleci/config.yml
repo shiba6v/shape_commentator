@@ -27,6 +27,7 @@ jobs:
       - run:
           name: TestPyPI
           command: |
+            export TEST_RELEASE_HASH=$(git rev-parse --short HEAD)
             python setup.py sdist
             echo -e "[testpypi]" >> ~/.pypirc
             echo -e "repository=https://test.pypi.org/legacy/" >> ~/.pypirc
