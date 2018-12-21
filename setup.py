@@ -1,9 +1,20 @@
 from setuptools import setup
+import os
+import subprocess
+
+VERSION = "0.1.4"
+
+# $TEST_RELEASE_HASHに短いコミット番号をつけると，テストリリース時にそれを後ろにつける．
+# TestPyPIでリリースバージョンが被ってCIがコケるのを防ぐため．
+if "TESTPYPI_PASSWORD" in os.environ and\
+    "TEST_RELEASE_HASH" in os.environ and\
+    os.environ["TEST_RELEASE_HASH"] == subprocess.check_output("git rev-parse --short HEAD"):
+    VERSION += "-" + subprocess.check_output("git rev-parse --short HEAD")
 
 setup(
     name="shape_commentator",
     packages=["shape_commentator"],
-    version="0.1.4",
+    version=VERSION,
     description="You can easily add numpy.ndarray.shape information to your script as comments.",
     author="shiba6v",
     author_email="shiba6v@gmail.com",
