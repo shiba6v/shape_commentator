@@ -1,9 +1,9 @@
-version: 2
+version: 2.1
 jobs:
-  test:
+  test36:
     docker:
       - image: circleci/python:3.6.6
-    steps:
+    steps: &test-steps
       - checkout
       - run:
           name: Install
@@ -16,6 +16,14 @@ jobs:
       - run:
           name: BatsTest
           command: bats tests/test_all.bats
+  test35:
+    docker:
+        - image: circleci/python:3.5.6
+    steps: *test-steps
+  test34:
+    docker:
+        - image: circleci/python:3.4.9
+    steps: *test-steps
   deploy-test:
     docker:
       - image: circleci/python:3.6.6
@@ -56,20 +64,28 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - test:
-          filters:
+      - test36:
+          filters: &filters-test
               tags:
                   only: /^v_.*/
+      - test35:
+          filters:
+              *filters-test
+      - test34:
+          filters:
+              *filters-test
       - deploy-test:
-          requires:
-            - test
+          requires: &all-version-requirements
+            - test36
+            - test35
+            - test34
           filters:
               branches:
                   only:
                     - master
       - deploy:
           requires:
-            - test
+            *all-version-requirements
           filters:
               branches:
                   ignore: /.*/

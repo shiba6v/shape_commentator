@@ -1,4 +1,5 @@
 # Shape Commentator
+[![CircleCI](https://circleci.com/gh/shiba6v/shape_commentator.svg?style=svg)](https://circleci.com/gh/shiba6v/shape_commentator)
 
 ## About  
 You can easily add numpy.ndarray.shape information to your script as comments.
@@ -7,6 +8,12 @@ You can easily add numpy.ndarray.shape information to your script as comments.
 ```bash
 pip install shape_commentator
 ```
+
+### Tested Python Version  
+Test script must be written in these version of Python.
+- 3.6.6
+- 3.5.6
+- 3.4.9
 
 ## Usage  
 ### CLI
@@ -31,10 +38,6 @@ shape_commentator.comment(In[len(In)-2],globals(),locals())
 
 ## Development  
 ### Python Main Version in Development  
-- 3.6.6
-
-### Python Tested Version  
-Test script must be written in these version of Python.
 - 3.6.6
 
 ### Prerequisities
