@@ -1,4 +1,5 @@
 # Shape Commentator
+[![CircleCI](https://circleci.com/gh/shiba6v/shape_commentator.svg?style=svg)](https://circleci.com/gh/shiba6v/shape_commentator)
 
 ## About  
 You can easily add numpy.ndarray.shape information to your script as comments.
