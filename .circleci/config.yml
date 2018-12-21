@@ -3,7 +3,7 @@ jobs:
   test36:
     docker:
       - image: circleci/python:3.6.6
-    steps:  &test-steps
+    steps: &test-steps
       - checkout
       - run:
           name: Install
@@ -65,7 +65,7 @@ workflows:
   build-and-test:
     jobs:
       - test36:
-          filters:  &filters-test
+          filters: &filters-test
               tags:
                   only: /^v_.*/
       - test35:
@@ -75,7 +75,7 @@ workflows:
           filters:
               *filters-test
       - deploy-test:
-          requires:  &all-version-requirements
+          requires: &all-version-requirements
             - test36
             - test35
             - test34
@@ -85,7 +85,7 @@ workflows:
                     - master
       - deploy:
           requires:
-            - *all-version-requirements
+            *all-version-requirements
           filters:
               branches:
                   ignore: /.*/
