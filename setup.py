@@ -26,7 +26,7 @@ if "TESTPYPI_PASSWORD" in os.environ and\
     elif len(previous_version) != 2:
         # 直前が本リリースの時は，dev0としてテストリリース
         VERSION += ".dev0"
-    else len(previous_version) == 2 and previous_version[0] == VERSION:
+    else:
         # 直前にN.N.N.devNのテストリリースをTestPyPIで行った時に，dev(N+1)としてテストリリース．
         VERSION += ".dev" + str(int(previous_version[1])+1)
 
