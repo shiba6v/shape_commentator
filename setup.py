@@ -19,9 +19,9 @@ GIT_HASH = subprocess.check_output("git rev-parse --short HEAD".split()).strip()
 if "TESTPYPI_PASSWORD" in os.environ and\
     "TEST_RELEASE_HASH" in os.environ and\
     os.environ["TEST_RELEASE_HASH"] == GIT_HASH:
-    previous_version = get_test_version().split(".dev")
+    previous_version = get_test_version().split(".post")
     if previous_version[0] != VERSION:
-        # マイナーバージョン以上のアップデートを入れた時は，devを付けずにテストリリース
+        # マイナーバージョン以上のアップデートを入れた時は，postを付けずにテストリリース
         pass
     elif len(previous_version) != 2:
         # 直前が本リリースの時は，post0としてテストリリース
