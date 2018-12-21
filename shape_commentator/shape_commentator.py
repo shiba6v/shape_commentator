@@ -147,7 +147,7 @@ def main():
     if len(sys.argv) <= 1:
         print("Please set filename")
         print("example:")
-        print("    $ python shape_commentator.py filename")
+        print("    $ python -m shape_commentator filename arg1 arg2")
         exit()
     
     filename = sys.argv[1]

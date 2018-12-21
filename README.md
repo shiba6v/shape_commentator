@@ -20,7 +20,7 @@ pip install shape_commentator
 ![src](https://user-images.githubusercontent.com/13820488/49359824-a4bf2200-f71a-11e8-93f2-b1d916e9cf3b.PNG)  
 ![src_commented](https://user-images.githubusercontent.com/13820488/49359827-a688e580-f71a-11e8-9e15-9ee509aca238.PNG)   
 
-### Jupyter  
+### IPython / Jupyter Notebook  
 1. Execute the cell that you want to see shape.  
 2. Run the cell below, and the commented source code will be outputted.  
 ```python
@@ -30,7 +30,21 @@ shape_commentator.comment(In[len(In)-2],globals(),locals())
 ![jupyter](https://user-images.githubusercontent.com/13820488/49359830-a852a900-f71a-11e8-89b8-1c7b9ea17343.PNG)  
 
 ## Development  
+### Python Main Version in Development  
+- 3.6.6
+
+### Python Tested Version  
+Test script must be written in these version of Python.
+- 3.6.6
+
+### Prerequisities
+```
+pip install numpy
+sudo apt install bats
+```
+
 ### Test  
 ```
-python -m doctest shape_commentator.py
+python -m doctest shape_commentator/shape_commentator.py
+bats tests/test_all.bats
 ```
