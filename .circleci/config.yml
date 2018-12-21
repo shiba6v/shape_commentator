@@ -23,7 +23,7 @@ jobs:
       - checkout
       - run:
           name: Install
-          command: sudo pip install twine
+          command: sudo pip install twine requests lxml
       - run:
           name: TestPyPI
           command: |
