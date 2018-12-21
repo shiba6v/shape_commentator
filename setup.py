@@ -2,7 +2,8 @@ from setuptools import setup
 import os
 import subprocess
 
-VERSION = "0.1.4"
+# N.N.Nをリリースした後，すぐにここをN.N.(N+1)に変える．
+VERSION = "0.2.1"
 
 def get_test_version():
     import requests
