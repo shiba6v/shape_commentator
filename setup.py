@@ -6,7 +6,7 @@ VERSION = "0.1.4"
 
 # $TEST_RELEASE_HASHに短いコミット番号をつけると，テストリリース時にそれを後ろにつける．
 # TestPyPIでリリースバージョンが被ってCIがコケるのを防ぐため．
-GIT_HASH = subprocess.check_output("git rev-parse --short HEAD".split()).strip()
+GIT_HASH = subprocess.check_output("git rev-parse --short HEAD".split()).strip().decode()
 if "TESTPYPI_PASSWORD" in os.environ and\
     "TEST_RELEASE_HASH" in os.environ and\
     os.environ["TEST_RELEASE_HASH"] == GIT_HASH:
