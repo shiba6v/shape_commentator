@@ -10,7 +10,7 @@ GIT_HASH = subprocess.check_output("git rev-parse --short HEAD".split()).strip()
 if "TESTPYPI_PASSWORD" in os.environ and\
     "TEST_RELEASE_HASH" in os.environ and\
     os.environ["TEST_RELEASE_HASH"] == GIT_HASH:
-    VERSION += "-" + GIT_HASH
+    VERSION += "+" + GIT_HASH
 
 setup(
     name="shape_commentator",
