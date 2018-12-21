@@ -34,6 +34,7 @@ jobs:
             echo -e "username = shiba6v" >> ~/.pypirc
             echo -e "password = $TESTPYPI_PASSWORD" >> ~/.pypirc
             twine upload --repository testpypi dist/*
+            unset TEST_RELEASE_HASH
   deploy:
     docker:
       - image: circleci/python:3.6.6
