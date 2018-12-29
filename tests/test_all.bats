@@ -37,7 +37,7 @@ compare_result(){
         fi
     fi
 
-    python $APP_DIRNAME/shape_commentator/shape_commentator.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME
+    python $APP_DIRNAME/shape_commentator/main.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME
 
     file_commented=$BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME.commented.py 
     file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
