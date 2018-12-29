@@ -14,6 +14,7 @@ Test script must be written in these version of Python.
 - 3.6.6
 - 3.5.6
 - 3.4.9
+- 2.7.15
 
 ## Usage  
 ### CLI
@@ -50,4 +51,9 @@ sudo apt install bats
 ```
 python -m doctest shape_commentator/shape_commentator.py
 bats tests/test_all.bats
+```
+
+### Sample
+```
+python shape_commentator/shape_commentator.py tests/input_scripts/numpy_compute.py
 ```

@@ -17,11 +17,12 @@ def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
             tmp.reverse()
             for t in tmp:
                 tpl_stack.append(t)
-        elif type(tpl) == SHAPE_COMMENTATOR_tuple_unpacker_endmark:
+        elif isinstance(tpl,SHAPE_COMMENTATOR_tuple_unpacker_endmark):
             result += ")"
         elif hasattr(tpl, "shape"):
             result += str(tpl.shape) + ","
         else:
+            # change to type(tpl).__name__
             result += str(type(tpl)) + ","
     return result
 """
@@ -99,7 +100,6 @@ def code_compile(source):
     code = compile(tree,'<string>','exec')
     return code
 
-# TODO 一度検査した行は通らないようにしたい
 def execute(source,globals,locals=None):
     r"""
     >>> SHAPE_COMMENTATOR_RESULT={};execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
@@ -108,26 +108,26 @@ def execute(source,globals,locals=None):
     code = code_compile(source)
     exec(code, globals, locals)
 
-# Jupyter Notebook上で前のセルを簡単にコメントする
+# comment in Jupyter Notebook / IPython
 def comment(source, globals, locals=None):
     r"""
     >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])','print("delete_this")'];comment(In[len(In)-2],globals(),locals())
     import numpy as np
     a = np.array([1,2,3,4,5,6])  #_ (6,),
     """
-    # commentを呼んだセルに対してcommentを呼ばれると厄介なので消す
+    # delete the cell which runs shape_commentator
     exec("In[len(In)-1] = ''", globals)
-    # globalsを乗っ取っているので，このライブラリ内で宣言された変数は引き継がれない．
     globals['SHAPE_COMMENTATOR_RESULT'] = {}
     try:
         execute(source, globals)
     finally:
-        write_comment(source, globals['SHAPE_COMMENTATOR_RESULT'], print)
+        print_func = lambda line:sys.stdout.write(line+"\n")
+        write_comment(source, globals['SHAPE_COMMENTATOR_RESULT'], print_func)
 
-# ソース名.commented.pyにコメント付きソースコードを出力．
+# output commented source code as filename.py.commented.py
 def write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func):
     r"""
-    >>> write_comment('import numpy as np\na = np.array([1,2,3,4,5,6])', {'2': '(6,),'}, print)
+    >>> write_comment('import numpy as np\na = np.array([1,2,3,4,5,6])', {'2': '(6,),'}, lambda line:sys.stdout.write(line+"\n"))
     import numpy as np
     a = np.array([1,2,3,4,5,6])  #_ (6,),
     """
