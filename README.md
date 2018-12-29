@@ -51,3 +51,8 @@ sudo apt install bats
 python -m doctest shape_commentator/shape_commentator.py
 bats tests/test_all.bats
 ```
+
+### Sample
+```
+python shape_commentator/shape_commentator.py tests/input_scripts/numpy_compute.py
+```
