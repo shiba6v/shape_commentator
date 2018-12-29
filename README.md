@@ -14,6 +14,7 @@ Test script must be written in these version of Python.
 - 3.6.6
 - 3.5.6
 - 3.4.9
+- 2.7.15
 
 ## Usage  
 ### CLI
