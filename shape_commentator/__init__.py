@@ -1,1 +1,1 @@
-from shape_commentator.shape_commentator import *
+from main import *
