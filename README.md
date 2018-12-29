@@ -53,6 +53,14 @@ python -m doctest shape_commentator/shape_commentator.py
 bats tests/test_all.bats
 ```
 
+### Try Master Branch
+The package of shape_commentator in TestPyPI is the HEAD of master branch.  
+You can try newest (but under development) version by running commands below.
+```
+yes | pip uninstall shape-commentator
+pip install --index-url https://test.pypi.org/simple/ shape-commentator
+```
+
 ### Sample
 ```
 python shape_commentator/shape_commentator.py tests/input_scripts/numpy_compute.py
