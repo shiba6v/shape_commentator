@@ -1,2 +1,2 @@
-import shape_commentator.shape_commentator as sp
+import main as sp
 sp.main()
