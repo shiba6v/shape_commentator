@@ -1,6 +1,5 @@
 class A():
-    def __init__(self):
-        pass
+    pass
 
 class B(A):
     def __init__(self):
