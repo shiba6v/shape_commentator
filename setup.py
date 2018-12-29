@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 import subprocess
 
-VERSION = "0.1.4"
+VERSION = "0.2.1"
 
 def get_test_version():
     import requests
