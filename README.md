@@ -55,7 +55,7 @@ bats tests/test_all.bats
 python setup.py develop --uninstall
 ```
 
-### Create New Test Scripts
+### Changing Test Scripts
 Remove `remove_tested_scripts` in `tests/test_all.bats` and run `bats tests/test_all.bats`, and you get new test script in `tests/input_scripts/`
 
 ### Try Master Branch

@@ -83,3 +83,19 @@ compare_method_result(){
 @test "Rewriting commented script (Method)" {
     compare_method_result "rewrite.py"
 }
+
+@test "Standard types (Module)" {
+    compare_module_result "stdtypes.py"
+}
+
+@test "Standard types (Method)" {
+    compare_method_result "stdtypes.py"
+}
+
+@test "Iterators (Module)" {
+    compare_module_result "iters.py"
+}
+
+@test "Iterators (Method)" {
+    compare_method_result "iters.py"
+}
