@@ -68,5 +68,9 @@ pip install --index-url https://test.pypi.org/simple/ shape-commentator
 
 ### Sample
 ```
-python shape_commentator/shape_commentator.py tests/input_scripts/numpy_compute.py
+sh tests/install_for_dev.sh
+# Module Mode
+python -m shape_commentator tests/input_scripts/numpy_compute.py
+# Method Mode
+python tests/comment_method.py tests/input_scripts/numpy_compute.py 
 ```
