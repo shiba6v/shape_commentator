@@ -16,7 +16,7 @@ remove_tested_scripts(){
     rm_if_exists $BATS_TEST_DIRNAME/input_scripts/*.commented.py
     rm_if_exists $BATS_TEST_DIRNAME/input_scripts/2/*.commented.py
     rm_if_exists $BATS_TEST_DIRNAME/input_scripts/3/*.commented.py
-
+    rm_if_exists $BATS_TEST_DIRNAME/result
 }
 
 rm_if_exists(){
@@ -26,7 +26,7 @@ rm_if_exists(){
     fi
 }
 
-compare_result(){
+get_script_path(){
     SCRIPT_NAME=$1
 
     if [ ! -e $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME ];then
@@ -37,6 +37,13 @@ compare_result(){
         fi
     fi
 
+    echo $SCRIPT_NAME
+}
+
+
+compare_module_result(){
+    SCRIPT_NAME=$(get_script_path $1)
+
     # python $APP_DIRNAME/shape_commentator/main.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME
     python -m shape_commentator $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME
 
@@ -45,18 +52,34 @@ compare_result(){
     diff $file_commented $file_correct
 }
 
-@test "NumPy in CLI" {
-    compare_result "numpy_compute.py"
+compare_method_result(){
+    SCRIPT_NAME=$(get_script_path $1)
+    python $BATS_TEST_DIRNAME/comment_method.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+    file_commented=$BATS_TEST_DIRNAME/result
+    file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
+    diff $file_commented $file_correct
 }
 
-# @test "NumPy in IPython" {
-# 
-# }
-
-@test "Class in CLI" {
-    compare_result "class_in_file.py"
+@test "NumPy (Module)" {
+    compare_module_result "numpy_compute.py"
 }
 
-@test "Rewriting commented script" {
-    compare_result "rewrite.py"
+@test "NumPy (Method)" {
+    compare_method_result "numpy_compute.py"
+}
+
+@test "Class (Module)" {
+    compare_module_result "class_in_file.py"
+}
+
+@test "Class (Method)" {
+    compare_method_result "class_in_file.py"
+}
+
+@test "Rewriting commented script (Module)" {
+    compare_module_result "rewrite.py"
+}
+
+@test "Rewriting commented script (Method)" {
+    compare_method_result "rewrite.py"
 }
