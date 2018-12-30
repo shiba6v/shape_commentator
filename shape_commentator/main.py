@@ -140,6 +140,7 @@ def write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func):
             output_func(line)
 
 def main():
+    print("=========aaa=========")
     if len(sys.argv) <= 1:
         print("Please set filename")
         print("example:")

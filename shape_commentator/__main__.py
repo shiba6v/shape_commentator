@@ -1,2 +1,2 @@
-import main as sp
+from . import main as sp
 sp.main()
