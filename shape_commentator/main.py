@@ -117,7 +117,7 @@ def code_compile(source):
 def execute(source,globals,locals=None):
     r"""
     >>> SHAPE_COMMENTATOR_RESULT={};execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
-    {'2': '(6,),'}
+    {'2': '(6,)'}
     """
     code = code_compile(source)
     exec(code, globals, locals)
@@ -127,7 +127,7 @@ def comment(source, globals, locals=None):
     r"""
     >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])','print("delete_this")'];comment(In[len(In)-2],globals(),locals())
     import numpy as np
-    a = np.array([1,2,3,4,5,6])  #_ (6,),
+    a = np.array([1,2,3,4,5,6])  #_ (6,)
     """
     # delete the cell which runs shape_commentator
     exec("In[len(In)-1] = ''", globals)
