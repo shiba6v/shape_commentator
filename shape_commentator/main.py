@@ -3,6 +3,7 @@ import sys
 import copy
 
 initialize_code = """
+__name__ = "__main__"
 def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
     class SHAPE_COMMENTATOR_tuple_unpacker_endmark:
         pass
