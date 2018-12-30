@@ -50,8 +50,13 @@ sudo apt install bats
 ### Test  
 ```
 python -m doctest shape_commentator/shape_commentator.py
+sh tests/install_for_dev.sh
 bats tests/test_all.bats
+python setup.py develop --uninstall
 ```
+
+### Create New Test Scripts
+Remove `remove_tested_scripts` in `tests/test_all.bats` and run `bats tests/test_all.bats`, and you get new test script in `tests/input_scripts/`
 
 ### Try Master Branch
 The package of shape_commentator in TestPyPI is the HEAD of master branch.  
