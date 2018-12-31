@@ -177,7 +177,7 @@ Remove `remove_tested_scripts` in `tests/test_all.bats` and run `bats tests/test
 The package of shape_commentator in TestPyPI is the HEAD of master branch.  
 You can try newest (but under development) version by running commands below.
 ```
-yes | pip uninstall shape-commentator
+pip uninstall -y shape-commentator
 pip install --index-url https://test.pypi.org/simple/ shape-commentator
 ```
 
