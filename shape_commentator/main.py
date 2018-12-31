@@ -9,7 +9,6 @@ def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
         pass
     class SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_LIST:
         pass
-    is_plural = False
     result = ""
     tpl_stack = [tpl_input]
     while len(tpl_stack) > 0:
@@ -18,26 +17,22 @@ def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
             if type(tpl) == tuple:
                 result += "("
                 tpl_stack.append(SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_TUPLE())
-                is_plural = True
             elif type(tpl) == list:
                 result += "["
                 tpl_stack.append(SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_LIST())
-                is_plural = True
             tmp = list(tpl)
             tmp.reverse()
             for t in tmp:
                 tpl_stack.append(t)
         elif isinstance(tpl,SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_TUPLE):
-            result += ")"
+            result += "),"
         elif isinstance(tpl,SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_LIST):
-            result += "]"
+            result += "],"
         elif hasattr(tpl, "shape"):
             result += str(tpl.shape) + ","
         else:
             result += type(tpl).__name__ + ","
-    if not is_plural:
-        # delete comma
-        result = result[:-1]
+    result = result[:-1]
     return result
 """
 
