@@ -5,26 +5,39 @@ import copy
 initialize_code = """
 __name__ = "__main__"
 def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
-    class SHAPE_COMMENTATOR_tuple_unpacker_endmark:
+    class SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_TUPLE:
         pass
+    class SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_LIST:
+        pass
+    is_plural = False
     result = ""
     tpl_stack = [tpl_input]
     while len(tpl_stack) > 0:
         tpl = tpl_stack.pop()
         if type(tpl) == tuple or type(tpl) == list:
-            result += "("
-            tpl_stack.append(SHAPE_COMMENTATOR_tuple_unpacker_endmark())
+            if type(tpl) == tuple:
+                result += "("
+                tpl_stack.append(SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_TUPLE())
+                is_plural = True
+            elif type(tpl) == list:
+                result += "["
+                tpl_stack.append(SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_LIST())
+                is_plural = True
             tmp = list(tpl)
             tmp.reverse()
             for t in tmp:
                 tpl_stack.append(t)
-        elif isinstance(tpl,SHAPE_COMMENTATOR_tuple_unpacker_endmark):
+        elif isinstance(tpl,SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_TUPLE):
             result += ")"
+        elif isinstance(tpl,SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_LIST):
+            result += "]"
         elif hasattr(tpl, "shape"):
             result += str(tpl.shape) + ","
         else:
-            # change to type(tpl).__name__
-            result += str(type(tpl)) + ","
+            result += type(tpl).__name__ + ","
+    if not is_plural:
+        # delete comma
+        result = result[:-1]
     return result
 """
 
@@ -104,7 +117,7 @@ def code_compile(source):
 def execute(source,globals,locals=None):
     r"""
     >>> SHAPE_COMMENTATOR_RESULT={};execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
-    {'2': '(6,),'}
+    {'2': '(6,)'}
     """
     code = code_compile(source)
     exec(code, globals, locals)
@@ -114,7 +127,7 @@ def comment(source, globals, locals=None):
     r"""
     >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])','print("delete_this")'];comment(In[len(In)-2],globals(),locals())
     import numpy as np
-    a = np.array([1,2,3,4,5,6])  #_ (6,),
+    a = np.array([1,2,3,4,5,6])  #_ (6,)
     """
     # delete the cell which runs shape_commentator
     exec("In[len(In)-1] = ''", globals)

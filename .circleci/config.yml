@@ -10,7 +10,7 @@ jobs:
           command: |
             sudo pip install numpy
             sudo apt install bats
-            sudo python setup.py install
+            sudo sh tests/install_for_dev.sh
       - run: 
           name: DocTest
           command: python -m doctest shape_commentator/main.py
