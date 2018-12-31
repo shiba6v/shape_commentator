@@ -45,7 +45,6 @@ setup(
     install_requires=[],
     entry_points={
         "console_scripts": [
-            "shape_commentator = shape_commentator.main:main"
         ]
     }
 )

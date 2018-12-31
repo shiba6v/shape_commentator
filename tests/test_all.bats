@@ -18,7 +18,7 @@ remove_tested_scripts(){
     rm_if_exists $BATS_TEST_DIRNAME/input_scripts/3/*.commented.py
     rm_if_exists $BATS_TEST_DIRNAME/result
 }
-
+ 
 rm_if_exists(){
     file_names=$1
     if [ -e $file_names ];then
@@ -40,7 +40,7 @@ get_script_path(){
     echo $SCRIPT_NAME
 }
 
-
+# python -m shape_commentator script_name
 compare_module_result(){
     SCRIPT_NAME=$(get_script_path $1)
 
@@ -52,9 +52,41 @@ compare_module_result(){
     diff $file_commented $file_correct
 }
 
-compare_method_result(){
+# shape_commentator.comment(src, globals())
+compare_method_comment_result(){
     SCRIPT_NAME=$(get_script_path $1)
-    python $BATS_TEST_DIRNAME/comment_method.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+    python $BATS_TEST_DIRNAME/method_comment.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+
+    file_commented=$BATS_TEST_DIRNAME/result
+    file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
+    diff $file_commented $file_correct
+}
+
+# shape_commentator.clear(src)
+compare_method_clear_result(){
+    SCRIPT_NAME=$(get_script_path $1)
+    python $BATS_TEST_DIRNAME/method_clear.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+
+    file_commented=$BATS_TEST_DIRNAME/result
+    file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
+    diff $file_commented $file_correct
+}
+
+# python -m shape_commentator.print_clear script_name
+compare_module_print_clear_result(){
+    SCRIPT_NAME=$(get_script_path $1)
+    python -m shape_commentator.print_clear $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+    
+    file_commented=$BATS_TEST_DIRNAME/result
+    file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
+    diff $file_commented $file_correct
+}
+
+# python -m shape_commentator.print_comment script_name
+compare_module_print_comment_result(){
+    SCRIPT_NAME=$(get_script_path $1)
+    python -m shape_commentator.print_comment $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+    
     file_commented=$BATS_TEST_DIRNAME/result
     file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
     diff $file_commented $file_correct
@@ -65,7 +97,7 @@ compare_method_result(){
 }
 
 @test "NumPy (Method)" {
-    compare_method_result "numpy_compute.py"
+    compare_method_comment_result "numpy_compute.py"
 }
 
 @test "Class (Module)" {
@@ -73,7 +105,7 @@ compare_method_result(){
 }
 
 @test "Class (Method)" {
-    compare_method_result "class_in_file.py"
+    compare_method_comment_result "class_in_file.py"
 }
 
 @test "Rewriting commented script (Module)" {
@@ -81,7 +113,7 @@ compare_method_result(){
 }
 
 @test "Rewriting commented script (Method)" {
-    compare_method_result "rewrite.py"
+    compare_method_comment_result "rewrite.py"
 }
 
 @test "Standard types (Module)" {
@@ -89,7 +121,7 @@ compare_method_result(){
 }
 
 @test "Standard types (Method)" {
-    compare_method_result "stdtypes.py"
+    compare_method_comment_result "stdtypes.py"
 }
 
 @test "Iterators (Module)" {
@@ -97,7 +129,7 @@ compare_method_result(){
 }
 
 @test "Iterators (Method)" {
-    compare_method_result "iters.py"
+    compare_method_comment_result "iters.py"
 }
 
 @test "Long and complex list and tuple (Module)" {
@@ -105,5 +137,17 @@ compare_method_result(){
 }
 
 @test "Long and complex list and tuple (Method)" {
-    compare_method_result "long_list.py"
+    compare_method_comment_result "long_list.py"
+}
+
+@test "Module print_clear" {
+    compare_module_print_clear_result "print_clear.py"
+}
+
+@test "Modle print_comment" {
+    compare_module_print_comment_result "print_comment.py"
+}
+
+@test "Method shape_commentator.clear(src)" {
+    compare_method_clear_result "print_clear.py"
 }
