@@ -99,3 +99,11 @@ compare_method_result(){
 @test "Iterators (Method)" {
     compare_method_result "iters.py"
 }
+
+@test "Long and complex list and tuple (Module)" {
+    compare_module_result "long_list.py"
+}
+
+@test "Long and complex list and tuple (Method)" {
+    compare_method_result "long_list.py"
+}
