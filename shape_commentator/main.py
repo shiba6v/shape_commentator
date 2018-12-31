@@ -168,7 +168,7 @@ def preprocess_in_module_mode():
 # comment in Jupyter Notebook / IPython
 def comment(source, globals, locals=None):
     r"""
-    >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])','print("delete_this")'];comment(In[len(In)-2],globals(),locals());sys.stdout.write(In[len(In)-1])
+    >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])','print("delete_this")'];comment(In[len(In)-2],globals(),locals())
     import numpy as np
     a = np.array([1,2,3,4,5,6])  #_ (6,)
     """
