@@ -1,8 +1,8 @@
 import sys
-from .main import preprocess_in_module_mode, clear
+from .main import _preprocess_in_module_mode, clear
 
 def print_clear_main():
-    preprocess_in_module_mode()
+    _preprocess_in_module_mode()
     filename = sys.argv[0]
     with open(filename) as f:
         source = f.read()

@@ -114,25 +114,25 @@ class ShapeNodeTransformer(ast.NodeTransformer):
         node_record.value = self.call_tuple_unpacker(node_orig.lineno, node_orig.col_offset, )
         return [node_store_tmp,node_orig,node_record]
 
-def code_compile(source):
+def _code_compile(source):
     tree = ast.parse(source)
     ShapeNodeTransformer().visit(tree)
     tree.body = ast.parse(initialize_code).body + tree.body
     code = compile(tree,'<string>','exec')
     return code
 
-def execute(source,globals,locals=None):
+def _execute(source,globals,locals=None):
     r"""
-    >>> SHAPE_COMMENTATOR_RESULT={};execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
+    >>> SHAPE_COMMENTATOR_RESULT={};_execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
     {'2': '(6,)'}
     """
-    code = code_compile(source)
+    code = _code_compile(source)
     exec(code, globals, locals)
 
 # clear comment in Jupyter Notebook / IPython
-def clear_comment(source, output_func):
+def _clear_comment(source, output_func):
     r"""
-    >>> clear_comment('import numpy as np\na = np.array([1,2,3,4,5,6])  #_ (6,)', lambda line:sys.stdout.write(line+"\n"))
+    >>> _clear_comment('import numpy as np\na = np.array([1,2,3,4,5,6])  #_ (6,)', lambda line:sys.stdout.write(line+"\n"))
     import numpy as np
     a = np.array([1,2,3,4,5,6])
     """
@@ -141,9 +141,9 @@ def clear_comment(source, output_func):
         output_func(new_line[0])
 
 # output commented source code as filename.py.commented.py
-def write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func):
+def _write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func):
     r"""
-    >>> write_comment('import numpy as np\na = np.array([1,2,3,4,5,6])', {'2': '(6,)'}, lambda line:sys.stdout.write(line+"\n"))
+    >>> _write_comment('import numpy as np\na = np.array([1,2,3,4,5,6])', {'2': '(6,)'}, lambda line:sys.stdout.write(line+"\n"))
     import numpy as np
     a = np.array([1,2,3,4,5,6])  #_ (6,)
     """
@@ -155,7 +155,11 @@ def write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func):
         else:
             output_func(line)
 
-def preprocess_in_module_mode():
+def _preprocess_in_module_mode():
+    r"""
+    >>> import sys;sys.argv=["0","1","2"];_preprocess_in_module_mode();print(sys.argv)
+    ['1', '2']
+    """
     if len(sys.argv) <= 1:
         print("Please set filename")
         print("example:")
@@ -176,10 +180,10 @@ def comment(source, globals, locals=None):
     exec("In[len(In)-1] = ''", globals)
     globals['SHAPE_COMMENTATOR_RESULT'] = {}
     try:
-        execute(source, globals)
+        _execute(source, globals)
     finally:
         print_func = lambda line:sys.stdout.write(line+"\n")
-        write_comment(source, globals['SHAPE_COMMENTATOR_RESULT'], print_func)
+        _write_comment(source, globals['SHAPE_COMMENTATOR_RESULT'], print_func)
 
 # clear comment in Jupyter Notebook / IPython
 def clear(source):
@@ -189,18 +193,18 @@ def clear(source):
     a = np.array([1,2,3,4,5,6])
     """
     print_func = lambda line:sys.stdout.write(line+"\n")
-    clear_comment(source, print_func)
+    _clear_comment(source, print_func)
 
 def main():
-    preprocess_in_module_mode()
+    _preprocess_in_module_mode()
     filename = sys.argv[0]
     global SHAPE_COMMENTATOR_RESULT
     SHAPE_COMMENTATOR_RESULT = {}
     with open(filename) as f:
         source = f.read()
         try:
-            execute(source,globals())
+            _execute(source,globals())
         finally:
             with open(filename+".commented.py", "w") as f_w:
                 output_func = lambda x: f_w.write(x + "\n")
-                write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func)
+                _write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func)
