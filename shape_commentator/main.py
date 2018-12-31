@@ -155,6 +155,7 @@ def _write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func):
         else:
             output_func(line)
 
+# move arguments to fill filename position
 def _preprocess_in_module_mode():
     r"""
     >>> import sys;sys.argv=["0","1","2"];_preprocess_in_module_mode();print(sys.argv)
@@ -169,6 +170,13 @@ def _preprocess_in_module_mode():
         sys.argv[i] = sys.argv[i+1]
     del sys.argv[len(sys.argv)-1]
 
+def _make_comment(source, globals, output_func):
+    globals['SHAPE_COMMENTATOR_RESULT'] = {}
+    try:
+        _execute(source,globals)
+    finally:
+        _write_comment(source, globals['SHAPE_COMMENTATOR_RESULT'], output_func)
+
 # comment in Jupyter Notebook / IPython
 def comment(source, globals, locals=None):
     r"""
@@ -178,12 +186,8 @@ def comment(source, globals, locals=None):
     """
     # delete the cell which runs shape_commentator
     exec("In[len(In)-1] = ''", globals)
-    globals['SHAPE_COMMENTATOR_RESULT'] = {}
-    try:
-        _execute(source, globals)
-    finally:
-        print_func = lambda line:sys.stdout.write(line+"\n")
-        _write_comment(source, globals['SHAPE_COMMENTATOR_RESULT'], print_func)
+    print_func = lambda line:sys.stdout.write(line+"\n")
+    _make_comment(source, globals, print_func)
 
 # clear comment in Jupyter Notebook / IPython
 def clear(source):
@@ -198,13 +202,8 @@ def clear(source):
 def main():
     _preprocess_in_module_mode()
     filename = sys.argv[0]
-    global SHAPE_COMMENTATOR_RESULT
-    SHAPE_COMMENTATOR_RESULT = {}
-    with open(filename) as f:
-        source = f.read()
-        try:
-            _execute(source,globals())
-        finally:
-            with open(filename+".commented.py", "w") as f_w:
-                output_func = lambda x: f_w.write(x + "\n")
-                _write_comment(source, SHAPE_COMMENTATOR_RESULT, output_func)
+    with open(filename+".commented.py", "w") as f_w:
+        output_func = lambda x: f_w.write(x + "\n")
+        with open(filename) as f:
+            source = f.read()
+            _make_comment(source, globals(), output_func)
