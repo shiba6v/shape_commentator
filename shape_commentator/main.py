@@ -1,9 +1,17 @@
 import ast
 import sys
 import copy
+import os
 
 initialize_code = """
 __name__ = "__main__"
+__package__ = None
+if "{0.filename}" == "":
+    if "__file__" in globals():
+        del __file__
+else:
+    __file__ = "{0.filename}"
+
 def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
     class SHAPE_COMMENTATOR_TUPLE_UNPACKER_ENDMARK_TUPLE:
         pass
@@ -47,6 +55,11 @@ def SHAPE_COMMENTATOR_tuple_unpacker(tpl_input):
     result = result[:-1]
     return result
 """
+
+class SHAPE_COMMENTATOR_ENV():
+    def __init__(self):
+        self.globals = {}
+        self.filename = ""
 
 class ShapeNodeTransformer(ast.NodeTransformer):
     def subsciript_dict(self, lineno, col_offset, s):
@@ -114,20 +127,21 @@ class ShapeNodeTransformer(ast.NodeTransformer):
         node_record.value = self.call_tuple_unpacker(node_orig.lineno, node_orig.col_offset, )
         return [node_store_tmp,node_orig,node_record]
 
-def _code_compile(source):
+def _code_compile(source, env):
     tree = ast.parse(source)
     ShapeNodeTransformer().visit(tree)
-    tree.body = ast.parse(initialize_code).body + tree.body
+    initializer = initialize_code.format(env)
+    tree.body = ast.parse(initializer).body + tree.body
     code = compile(tree,'<string>','exec')
     return code
 
-def _execute(source,globals,locals=None):
+def _execute(source, env):
     r"""
-    >>> SHAPE_COMMENTATOR_RESULT={};_execute('import numpy as np\na = np.array([1,2,3,4,5,6])',globals(),locals());SHAPE_COMMENTATOR_RESULT
+    >>> SHAPE_COMMENTATOR_RESULT={};env=SHAPE_COMMENTATOR_ENV();env.globals=globals();_execute('import numpy as np\na = np.array([1,2,3,4,5,6])',env);SHAPE_COMMENTATOR_RESULT
     {'2': '(6,)'}
     """
-    code = _code_compile(source)
-    exec(code, globals, locals)
+    code = _code_compile(source, env)
+    exec(code, env.globals)
 
 # clear comment in Jupyter Notebook / IPython
 def _clear_comment(source, output_func):
@@ -170,12 +184,12 @@ def _preprocess_in_module_mode():
         sys.argv[i] = sys.argv[i+1]
     del sys.argv[len(sys.argv)-1]
 
-def _make_comment(source, globals, output_func):
-    globals['SHAPE_COMMENTATOR_RESULT'] = {}
+def _make_comment(source, env, output_func):
+    env.globals['SHAPE_COMMENTATOR_RESULT'] = {}
     try:
-        _execute(source,globals)
+        _execute(source,env)
     finally:
-        _write_comment(source, globals['SHAPE_COMMENTATOR_RESULT'], output_func)
+        _write_comment(source, env.globals['SHAPE_COMMENTATOR_RESULT'], output_func)
 
 # comment in Jupyter Notebook / IPython
 def comment(source, globals, locals=None):
@@ -186,8 +200,10 @@ def comment(source, globals, locals=None):
     """
     # delete the cell which runs shape_commentator
     exec("In[len(In)-1] = ''", globals)
+    env = SHAPE_COMMENTATOR_ENV()
+    env.globals = globals
     print_func = lambda line:sys.stdout.write(line+"\n")
-    _make_comment(source, globals, print_func)
+    _make_comment(source, env, print_func)
 
 # clear comment in Jupyter Notebook / IPython
 def clear(source):
@@ -206,4 +222,7 @@ def main():
         output_func = lambda x: f_w.write(x + "\n")
         with open(filename) as f:
             source = f.read()
-            _make_comment(source, globals(), output_func)
+            env = SHAPE_COMMENTATOR_ENV()
+            env.globals = globals()
+            env.filename = filename
+            _make_comment(source, env, output_func)

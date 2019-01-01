@@ -16,13 +16,13 @@ remove_tested_scripts(){
     rm_if_exists $BATS_TEST_DIRNAME/input_scripts/*.commented.py
     rm_if_exists $BATS_TEST_DIRNAME/input_scripts/2/*.commented.py
     rm_if_exists $BATS_TEST_DIRNAME/input_scripts/3/*.commented.py
-    rm_if_exists $BATS_TEST_DIRNAME/result
+    rm_if_exists $BATS_TEST_DIRNAME/tmp_result*
 }
  
 rm_if_exists(){
     file_names=$1
     if [ -e $file_names ];then
-        rm $file_names
+        echo $file_names | xargs rm
     fi
 }
 
@@ -55,9 +55,9 @@ compare_module_result(){
 # shape_commentator.comment(src, globals())
 compare_method_comment_result(){
     SCRIPT_NAME=$(get_script_path $1)
-    python $BATS_TEST_DIRNAME/method_comment.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+    python $BATS_TEST_DIRNAME/method_comment.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/tmp_result
 
-    file_commented=$BATS_TEST_DIRNAME/result
+    file_commented=$BATS_TEST_DIRNAME/tmp_result
     file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
     diff $file_commented $file_correct
 }
@@ -65,9 +65,9 @@ compare_method_comment_result(){
 # shape_commentator.clear(src)
 compare_method_clear_result(){
     SCRIPT_NAME=$(get_script_path $1)
-    python $BATS_TEST_DIRNAME/method_clear.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+    python $BATS_TEST_DIRNAME/method_clear.py $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/tmp_result
 
-    file_commented=$BATS_TEST_DIRNAME/result
+    file_commented=$BATS_TEST_DIRNAME/tmp_result
     file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
     diff $file_commented $file_correct
 }
@@ -75,9 +75,9 @@ compare_method_clear_result(){
 # python -m shape_commentator.print_clear script_name
 compare_module_print_clear_result(){
     SCRIPT_NAME=$(get_script_path $1)
-    python -m shape_commentator.print_clear $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+    python -m shape_commentator.print_clear $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/tmp_result
     
-    file_commented=$BATS_TEST_DIRNAME/result
+    file_commented=$BATS_TEST_DIRNAME/tmp_result
     file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
     diff $file_commented $file_correct
 }
@@ -85,11 +85,23 @@ compare_module_print_clear_result(){
 # python -m shape_commentator.print_comment script_name
 compare_module_print_comment_result(){
     SCRIPT_NAME=$(get_script_path $1)
-    python -m shape_commentator.print_comment $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/result
+    python -m shape_commentator.print_comment $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/tmp_result
     
-    file_commented=$BATS_TEST_DIRNAME/result
+    file_commented=$BATS_TEST_DIRNAME/tmp_result
     file_correct=$BATS_TEST_DIRNAME/correct_scripts/$SCRIPT_NAME.commented.py
     diff $file_commented $file_correct
+}
+
+# 
+compare_print_result(){
+    SCRIPT_NAME=$(get_script_path $1)
+    python -m shape_commentator $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/tmp_result1
+    python $BATS_TEST_DIRNAME/input_scripts/$SCRIPT_NAME > $BATS_TEST_DIRNAME/tmp_result2
+
+    file_commented=$BATS_TEST_DIRNAME/tmp_result1
+    file_correct=$BATS_TEST_DIRNAME/tmp_result2
+    diff $file_commented $file_correct
+
 }
 
 @test "NumPy (Module)" {
@@ -144,10 +156,14 @@ compare_module_print_comment_result(){
     compare_module_print_clear_result "print_clear.py"
 }
 
-@test "Modle print_comment" {
+@test "Module print_comment" {
     compare_module_print_comment_result "print_comment.py"
 }
 
 @test "Method shape_commentator.clear(src)" {
     compare_method_clear_result "print_clear.py"
+}
+
+@test "__file__ __package__ __name__ is same" {
+    compare_print_result "filepath.py"
 }
