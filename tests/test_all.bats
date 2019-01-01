@@ -22,7 +22,7 @@ remove_tested_scripts(){
 rm_if_exists(){
     file_names=$1
     if [ -e $file_names ];then
-        rm $file_names
+        echo $file_names | xargs rm
     fi
 }
 
