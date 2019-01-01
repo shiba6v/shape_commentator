@@ -7,7 +7,8 @@ initialize_code = """
 __name__ = "__main__"
 __package__ = None
 if "{0.filename}" == "":
-    del __file__
+    if "__file__" in globals():
+        del __file__
 else:
     __file__ = "{0.filename}"
 
