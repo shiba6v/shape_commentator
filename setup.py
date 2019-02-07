@@ -3,7 +3,7 @@ import os
 import subprocess
 import io
 
-VERSION = "0.5.1"
+VERSION = "0.5.2"
 
 def get_test_version():
     import requests
