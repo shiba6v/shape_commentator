@@ -1,8 +1,9 @@
 from setuptools import setup
 import os
 import subprocess
+import io
 
-VERSION = "0.5.1"
+VERSION = "0.5.2"
 
 def get_test_version():
     import requests
@@ -30,6 +31,10 @@ if "TESTPYPI_PASSWORD" in os.environ:
             # Increment post release version number.
             VERSION += ".post" + str(int(previous_version[1])+1)
 
+this_directory = os.path.abspath(os.path.dirname(__file__))
+with io.open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
     name="shape_commentator",
     packages=["shape_commentator"],
@@ -40,7 +45,7 @@ setup(
     url="https://github.com/shiba6v/shape_commentator",
     license="MIT",
     keywords=["numpy", "ndarray", "shape comment", "tool"],
-    long_description=open("README.md").read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=[],
     entry_points={
