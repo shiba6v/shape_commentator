@@ -144,9 +144,9 @@ def _execute(source, env):
     exec(code, env.globals)
 
 # clear comment in Jupyter Notebook / IPython
-def _clear_comment(source, output_func):
+def clear_comment(source, output_func):
     r"""
-    >>> _clear_comment('import numpy as np\na = np.array([1,2,3,4,5,6])  #_ (6,)', lambda line:sys.stdout.write(line+"\n"))
+    >>> clear_comment('import numpy as np\na = np.array([1,2,3,4,5,6])  #_ (6,)', lambda line:sys.stdout.write(line+"\n"))
     import numpy as np
     a = np.array([1,2,3,4,5,6])
     """
@@ -191,6 +191,11 @@ def _make_comment(source, env, output_func):
     finally:
         _write_comment(source, env.globals['SHAPE_COMMENTATOR_RESULT'], output_func)
 
+def make_comment(source, env, output_func):
+    env.globals['SHAPE_COMMENTATOR_RESULT'] = {}
+    _execute(source,env)
+    _write_comment(source, env.globals['SHAPE_COMMENTATOR_RESULT'], output_func)
+
 # comment in Jupyter Notebook / IPython
 def comment(source, globals, locals=None):
     r"""
@@ -213,7 +218,7 @@ def clear(source):
     a = np.array([1,2,3,4,5,6])
     """
     print_func = lambda line:sys.stdout.write(line+"\n")
-    _clear_comment(source, print_func)
+    clear_comment(source, print_func)
 
 def main():
     _preprocess_in_module_mode()
