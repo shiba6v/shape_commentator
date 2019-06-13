@@ -34,13 +34,6 @@ class Ext():
         def shape_erase(line, cell):
             output = []
             output_func = lambda x: output.append(x)
-            display(Javascript(
-                """
-                var cell = Jupyter.notebook.get_selected_cell();
-                var text = cell.get_text();
-                cell.set_text(text.slice(16));
-                """
-            ))
             clear_comment(cell, output_func)
             output = "\n".join(output)
             new_code = json.dumps({"code": output})
