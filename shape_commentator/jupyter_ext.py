@@ -13,10 +13,16 @@ class Ext():
             output = []
             output_func = lambda x: output.append(x)
             display(Javascript(
-                """
+                r"""
                 var cell = Jupyter.notebook.get_selected_cell();
                 var text = cell.get_text();
-                cell.set_text(text.slice(16));
+                var lines = text.split(/\n/);
+                for(var i=0;i<lines.length;i++){
+                  if (lines[i].indexOf('%%shape_comment') != -1){
+                    lines[i] = "";
+                  }
+                }
+                cell.set_text(lines.join("\n"));
                 """
             ))
             make_comment(cell, self.env, output_func)
