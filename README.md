@@ -13,6 +13,8 @@ An article about this tool is here. (in Japanese)
 ### For Jupyter Notebook User
 [This](https://github.com/shiba6v/jupyter-shape-commentator) is a Jupyter Notebook extension of this tool. It is easier to use!
 
+![use_fig](https://user-images.githubusercontent.com/13820488/61187795-fcf6d300-a6b0-11e9-97c6-4fd029244839.png)
+
 ### NumPy
 ```bash
 pip install shape_commentator numpy
