@@ -124,8 +124,26 @@ By using `shape_commentator.print_clear` module, you get the uncommented script 
 python -m shape_commentator.print_clear src.py [args]
 ```
 
-### IPython / Jupyter Notebook  
+### Jupyter Notebook  
 Jupyter Notebook Extension is [HERE](https://github.com/shiba6v/jupyter-shape-commentator)
+
+### IPython
+#### Create Commented Script
+1. Execute the cell that you want to see shape.  
+2. Run the cell below, and the commented source code will be outputted.  (`In[len(In)-2]` is the source code in the cell that you ran just before.)
+
+```python
+import shape_commentator
+shape_commentator.comment(In[len(In)-2],globals())
+```  
+![ipython_comment](https://user-images.githubusercontent.com/13820488/50559871-1ac8a000-0d3e-11e9-923e-997f6aac6d68.png)  
+
+#### Clear Shape Comment
+```python
+import shape_commentator
+shape_commentator.clear(In[len(In)-2])
+```  
+![ipython_clear](https://user-images.githubusercontent.com/13820488/50559879-37fd6e80-0d3e-11e9-8c06-7f6963396dcb.png)  
 
 ## Tested Python Version  
 Test script must be written in these version of Python.
