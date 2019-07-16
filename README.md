@@ -6,7 +6,13 @@ You can easily add numpy.ndarray.shape, torch.Size, other "shape" and type infor
 
 ![Sample](https://user-images.githubusercontent.com/13820488/50560224-e656e300-0d41-11e9-90a3-f946cb40ab72.png)
 
+An article about this tool is here. (in Japanese)
+[NumPyやPyTorchで使える超便利ツールを作った](http://shiba6v.hatenablog.com/entry/shape_commentator_release)
+
 ## Getting Started  
+### For Jupyter Notebook User
+[This](https://github.com/shiba6v/jupyter-shape-commentator) is a Jupyter Notebook extension of this tool. It is easier to use!
+
 ### NumPy
 ```bash
 pip install shape_commentator numpy
@@ -119,22 +125,7 @@ python -m shape_commentator.print_clear src.py [args]
 ```
 
 ### IPython / Jupyter Notebook  
-#### Create Commented Script
-1. Execute the cell that you want to see shape.  
-2. Run the cell below, and the commented source code will be outputted.  (`In[len(In)-2]` is the source code in the cell that you ran just before.)
-
-```python
-import shape_commentator
-shape_commentator.comment(In[len(In)-2],globals())
-```  
-![jupyter_comment](https://user-images.githubusercontent.com/13820488/50559871-1ac8a000-0d3e-11e9-923e-997f6aac6d68.png)  
-
-#### Clear Shape Comment
-```python
-import shape_commentator
-shape_commentator.clear(In[len(In)-2])
-```  
-![jupyter_clear](https://user-images.githubusercontent.com/13820488/50559879-37fd6e80-0d3e-11e9-8c06-7f6963396dcb.png)  
+Jupyter Notebook Extension is [HERE](https://github.com/shiba6v/jupyter-shape-commentator)
 
 ## Tested Python Version  
 Test script must be written in these version of Python.
@@ -180,6 +171,3 @@ You can try newest (but under development) version by running commands below.
 pip uninstall -y shape-commentator
 pip install --index-url https://test.pypi.org/simple/ shape-commentator
 ```
-
-## Further Reading
-[NumPyやPyTorchで使える超便利ツールを作った](http://shiba6v.hatenablog.com/entry/shape_commentator_release)
