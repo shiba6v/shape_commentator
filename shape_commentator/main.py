@@ -184,17 +184,17 @@ def _preprocess_in_module_mode():
         sys.argv[i] = sys.argv[i+1]
     del sys.argv[len(sys.argv)-1]
 
-def _make_comment(source, env, output_func):
+def make_comment(source, env, output_func):
     env.globals['SHAPE_COMMENTATOR_RESULT'] = {}
     try:
         _execute(source,env)
     finally:
         _write_comment(source, env.globals['SHAPE_COMMENTATOR_RESULT'], output_func)
 
-def make_comment(source, env, output_func):
-    env.globals['SHAPE_COMMENTATOR_RESULT'] = {}
-    _execute(source,env)
-    _write_comment(source, env.globals['SHAPE_COMMENTATOR_RESULT'], output_func)
+# def make_comment(source, env, output_func):
+#     env.globals['SHAPE_COMMENTATOR_RESULT'] = {}
+#     _execute(source,env)
+#     _write_comment(source, env.globals['SHAPE_COMMENTATOR_RESULT'], output_func)
 
 # comment in Jupyter Notebook / IPython
 def comment(source, globals, locals=None):
@@ -208,7 +208,7 @@ def comment(source, globals, locals=None):
     env = SHAPE_COMMENTATOR_ENV()
     env.globals = globals
     print_func = lambda line:sys.stdout.write(line+"\n")
-    _make_comment(source, env, print_func)
+    make_comment(source, env, print_func)
 
 # clear comment in Jupyter Notebook / IPython
 def clear(source):
@@ -230,4 +230,4 @@ def main():
             env = SHAPE_COMMENTATOR_ENV()
             env.globals = globals()
             env.filename = filename
-            _make_comment(source, env, output_func)
+            make_comment(source, env, output_func)

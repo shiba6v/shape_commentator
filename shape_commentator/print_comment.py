@@ -1,5 +1,5 @@
 import sys
-from .main import _preprocess_in_module_mode, _make_comment, SHAPE_COMMENTATOR_ENV
+from .main import _preprocess_in_module_mode, make_comment, SHAPE_COMMENTATOR_ENV
 
 def print_comment_main():
     _preprocess_in_module_mode()
@@ -10,7 +10,7 @@ def print_comment_main():
     print_func = lambda line:sys.stdout.write(line+"\n")
     with open(filename) as f:
         source = f.read()
-        _make_comment(source, env, print_func)
+        make_comment(source, env, print_func)
 
 if __name__ == "__main__":
     print_comment_main()
