@@ -14,9 +14,11 @@ def shape_comment(line, cell):
     output_func = lambda x: output.append(x)
     env = SHAPE_COMMENTATOR_ENV()
     env.globals = globals()
-    make_comment(cell, env, output_func)
-    output = "\n".join(output)
-    return output
+    try:
+        make_comment(cell, env, output_func)
+    finally:
+        output = "\n".join(output)
+        return output
 
 @register_cell_magic
 def shape_erase(line, cell):
