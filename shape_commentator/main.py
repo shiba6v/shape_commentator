@@ -197,13 +197,18 @@ def make_comment(source, env, output_func):
 #     _write_comment(source, env.globals['SHAPE_COMMENTATOR_RESULT'], output_func)
 
 # comment in Jupyter Notebook / IPython
-def comment(source, globals, locals=None):
+def comment(source=None, globals=None, locals=None):
     r"""
     >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])','print("delete_this")'];comment(In[len(In)-2],globals(),locals())
     import numpy as np
     a = np.array([1,2,3,4,5,6])  #_ (6,)
     """
     # delete the cell which runs shape_commentator
+    if globals == None:
+        globals = sys._getframe(1).f_globals
+    if source == None:
+        In = globals["In"]
+        source = In[len(In)-2]
     exec("In[len(In)-1] = ''", globals)
     env = SHAPE_COMMENTATOR_ENV()
     env.globals = globals
