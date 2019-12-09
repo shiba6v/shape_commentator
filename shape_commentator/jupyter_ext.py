@@ -12,6 +12,14 @@ class SHAPE_COMMENTATOR_ENV():
 
 @register_cell_magic
 def shape_comment(line, cell):
+    print("Sorry. shape_commentator jupyter extension is deprecated.\n Please use shape_commentator IPython magic command.")
+    print("Usage:")
+    print(
+"""
+%%shape
+{}
+""".format(cell)
+    )
     output = []
     output_func = lambda x: output.append(x)
     env = SHAPE_COMMENTATOR_ENV()
@@ -24,6 +32,14 @@ def shape_comment(line, cell):
 
 @register_cell_magic
 def shape_erase(line, cell):
+    print("Sorry. shape_commentator jupyter extension is deprecated.\n Please use shape_commentator IPython magic command.")
+    print("Usage:")
+    print(
+"""
+%%shape -d
+{}
+""".format(cell)
+    )
     output = []
     output_func = lambda x: output.append(x)
     clear_comment(cell, output_func)

@@ -104,6 +104,15 @@ compare_print_result(){
 
 }
 
+compare_ipython_output(){
+    python $BATS_TEST_DIRNAME/ipython_ext_test.py > $BATS_TEST_DIRNAME/tmp_result
+    diff $BATS_TEST_DIRNAME/tmp_result $BATS_TEST_DIRNAME/correct_scripts/ipython_ext_test.py
+}
+
+@test "IPython extension" {
+    compare_ipython_output
+}
+
 @test "NumPy (Module)" {
     compare_module_result "numpy_compute.py"
 }
