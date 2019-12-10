@@ -6,7 +6,7 @@ You can easily add numpy.ndarray.shape, torch.Size, other shape and type informa
 
 NumPyやPyTorchなどの配列のshape属性や，変数の型の実行時の情報を，ソースコードにコメントとして貼り付けるツールです．
 
-![Sample](https://user-images.githubusercontent.com/13820488/50560224-e656e300-0d41-11e9-90a3-f946cb40ab72.png)
+![Sample](https://user-images.githubusercontent.com/13820488/70534467-76321d80-1b9e-11ea-9ff1-e2d9c4140382.png)
 
 ## Usage  
 ### Execute as a Module
@@ -65,6 +65,7 @@ a = A()  #_ A
 
 ### IPython / Jupyter Notebook (Magic Command)
 To use IPython magic command,
+
 IPythonでのマジックコマンドの使い方
 ```python
 import shape_commentator
