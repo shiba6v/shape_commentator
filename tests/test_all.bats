@@ -104,8 +104,10 @@ compare_print_result(){
 
 }
 
+# IPython Extension
 compare_ipython_output(){
-    python $BATS_TEST_DIRNAME/ipython_ext_test.py > $BATS_TEST_DIRNAME/tmp_result
+    # ignore the first line by `tail +2`
+    python $BATS_TEST_DIRNAME/ipython_ext_test.py | tail +2 > $BATS_TEST_DIRNAME/tmp_result
     diff $BATS_TEST_DIRNAME/tmp_result $BATS_TEST_DIRNAME/correct_scripts/ipython_ext_test.py
 }
 
