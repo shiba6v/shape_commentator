@@ -216,12 +216,16 @@ def comment(source=None, globals=None, locals=None):
     make_comment(source, env, print_func)
 
 # clear comment in Jupyter Notebook / IPython
-def clear(source):
+def clear(source=None):
     r"""
     >>> In=['import numpy as np\na = np.array([1,2,3,4,5,6])  #_ (6,)',''];clear(In[len(In)-2])
     import numpy as np
     a = np.array([1,2,3,4,5,6])
     """
+    if source == None:
+        globals = sys._getframe(1).f_globals
+        In = globals["In"]
+        source = In[len(In)-2]
     print_func = lambda line:sys.stdout.write(line+"\n")
     clear_comment(source, print_func)
 
