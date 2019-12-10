@@ -53,14 +53,16 @@ output
 
 ## Development  
 ### Python Main Version in Development  
-- 3.6.6
+- 3.6.9
 
 ### Tested Python Version  
 Test script must be written in these version of Python.
-- 3.6.6
-- 3.5.6
-- 3.4.9
-- 2.7.15
+- 3.8.0
+- 3.7.5
+- 3.6.9
+- 3.5.9
+- 3.4.10
+- 2.7.17
 
 ### Installation
 ```
