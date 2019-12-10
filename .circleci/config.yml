@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
   test36:
-    docker:
+    docker: &main-version
       - image: circleci/python:3.6.9
     steps: &test-steps
       - checkout
@@ -38,8 +38,7 @@ jobs:
         - image: circleci/python:2.7.17
     steps: *test-steps
   deploy:
-    docker:
-      - image: circleci/python:3.6.6
+    docker: *main-version
     steps:
       - checkout
       - run:
@@ -62,6 +61,12 @@ workflows:
           filters: &filters-test
               tags:
                   only: /^v_.*/
+      - test38:
+          filters:
+              *filters-test
+      - test37:
+          filters:
+              *filters-test
       - test35:
           filters:
               *filters-test
