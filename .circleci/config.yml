@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Install
           command: |
-            sudo pip install numpy
+            sudo pip install numpy ipython
             sudo apt install bats
             sudo sh tests/install_for_dev.sh
       - run: 
