@@ -1,14 +1,14 @@
 version: 2.1
 jobs:
   test36:
-    docker:
-      - image: circleci/python:3.6.6
+    docker: &main-version
+      - image: circleci/python:3.6.9
     steps: &test-steps
       - checkout
       - run:
           name: Install
           command: |
-            sudo pip install numpy
+            sudo pip install numpy ipython mock
             sudo apt install bats
             sudo sh tests/install_for_dev.sh
       - run: 
@@ -17,21 +17,28 @@ jobs:
       - run:
           name: BatsTest
           command: bats tests/test_all.bats
+  test38:
+    docker:
+        - image: circleci/python:3.8.0
+    steps: *test-steps
+  test37:
+    docker:
+        - image: circleci/python:3.7.5
+    steps: *test-steps
   test35:
     docker:
-        - image: circleci/python:3.5.6
+        - image: circleci/python:3.5.9
     steps: *test-steps
   test34:
     docker:
-        - image: circleci/python:3.4.9
+        - image: circleci/python:3.4.10
     steps: *test-steps
   test27:
     docker:
-        - image: circleci/python:2.7.15
+        - image: circleci/python:2.7.17
     steps: *test-steps
   deploy:
-    docker:
-      - image: circleci/python:3.6.6
+    docker: *main-version
     steps:
       - checkout
       - run:
@@ -54,6 +61,12 @@ workflows:
           filters: &filters-test
               tags:
                   only: /^v_.*/
+      - test38:
+          filters:
+              *filters-test
+      - test37:
+          filters:
+              *filters-test
       - test35:
           filters:
               *filters-test
@@ -65,6 +78,8 @@ workflows:
               *filters-test
       - deploy:
           requires: &all-version-requirements
+            - test38
+            - test37
             - test36
             - test35
             - test34
