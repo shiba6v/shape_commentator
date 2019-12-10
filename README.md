@@ -3,17 +3,16 @@
 
 ## About  
 You can easily add numpy.ndarray.shape, torch.Size, other shape and type information at runtime to your script as comments.
+
 NumPyやPyTorchなどの配列のshape属性や，変数の型の実行時の情報を，ソースコードにコメントとして貼り付けるツールです．
 
 ![Sample](https://user-images.githubusercontent.com/13820488/50560224-e656e300-0d41-11e9-90a3-f946cb40ab72.png)
-
-作った経緯など，解説ブログはこちらにあります．
-[NumPyやPyTorchで使える超便利ツールを作った](http://shiba6v.hatenablog.com/entry/shape_commentator_release)
 
 ## Usage  
 ### Execute as a Module
 #### Create Commented Script to File
 1. Run this script as a module with argument of script name.  Command line arguments to the target script are available.
+
 Pythonのモジュールとしてshape_commentatorを実行してください．引数は，スクリプト名の後にスクリプトに渡したい引数を続けてください．
 
 ```bash
@@ -25,6 +24,7 @@ python -m shape_commentator src.py arg1 arg2 arg3
 ```
 
 2. You get the commented script. For example, you execute shape_commentator to `src.py`, you get `src.py.commented.py`.  
+
 `src.py`というスクリプトに対して実行すると，`src.py.commented.py`が生成されます．
 
 `src.py`
@@ -63,13 +63,15 @@ class A():
 a = A()  #_ A
 ```
 
-### IPython (Magic Command)
+### IPython / Jupyter Notebook (Magic Command)
 To use IPython magic command,
+IPythonでのマジックコマンドの使い方
 ```python
 import shape_commentator
 ```
 
 #### Create Commented Script
+コメントを付ける
 ```python
 %%shape
 a = np.array([1,2,3,4,5,6])
@@ -81,6 +83,7 @@ a = np.array([1,2,3,4,5,6])  #_ (6,)
 ```
 
 #### Delete Comments
+コメントを消す
 ```python
 %%shape -d
 a = np.array([1,2,3,4,5,6])  #_ (6,)
@@ -92,9 +95,13 @@ a = np.array([1,2,3,4,5,6])
 ```
 
 ## Tested Python Version  
-Test script must be written in these version of Python.
+Test scripts are written in these version of Python.
 以下のバージョンがテストされています．
 - 3.6.6
 - 3.5.6
 - 3.4.9
 - 2.7.15
+
+## Blog
+作った経緯などを書いた解説ブログはこちらにあります．
+[NumPyやPyTorchで使える超便利ツールを作った](http://shiba6v.hatenablog.com/entry/shape_commentator_release)
