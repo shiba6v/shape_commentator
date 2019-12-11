@@ -70,7 +70,7 @@ a = A()  #_ A
 ```
 
 ### Usage 2. IPython / Jupyter Notebook (Magic Command)
-![Sample_IPython](https://user-images.githubusercontent.com/13820488/70534467-76321d80-1b9e-11ea-9ff1-e2d9c4140382.png)
+![Sample_IPython](https://user-images.githubusercontent.com/13820488/70638063-91268f80-1c7b-11ea-94c3-d00d32133636.png)
 
 To use IPython / Jupyter Notebook magic command,  
 IPythonやJupyter Notebookでのマジックコマンドの使い方
