@@ -2,18 +2,25 @@
 [![CircleCI](https://circleci.com/gh/shiba6v/shape_commentator.svg?style=svg)](https://circleci.com/gh/shiba6v/shape_commentator)
 
 ## About  
-You can easily add numpy.ndarray.shape, torch.Size, other shape and type information at runtime to your script as comments.
+You can easily add numpy.ndarray.shape, torch.Size, other shape and type information at runtime to your script code as comments.  
+NumPyやPyTorchなどの配列のshape属性や，変数の型の実行時の情報を，スクリプトにコメントとして貼り付けるツールです．
 
-NumPyやPyTorchなどの配列のshape属性や，変数の型の実行時の情報を，ソースコードにコメントとして貼り付けるツールです．
+## Install
+```
+pip install -U shape_commentator
+```
+-U means upgrading.
 
-![Sample](https://user-images.githubusercontent.com/13820488/70534467-76321d80-1b9e-11ea-9ff1-e2d9c4140382.png)
+## Usage
+This tool has two types of usage.  
+このツールには2つの使い方があります．
 
-## Usage  
-### Execute as a Module
-#### Create Commented Script to File
-1. Run this script as a module with argument of script name.  Command line arguments to the target script are available.
+### Usage 1. Execute this as a Module
+![Sample_Module](https://user-images.githubusercontent.com/13820488/70629620-9f6daf00-1c6d-11ea-95d1-e4b8adc31a4d.png)
 
-Pythonのモジュールとしてshape_commentatorを実行してください．引数は，スクリプト名の後にスクリプトに渡したい引数を続けてください．
+#### Create Commented Script
+1. Run this script as a module with argument of script name.  Command line arguments to the target script are available.  
+Pythonのモジュールとしてshape_commentatorを実行してください．引数は，スクリプト名の後にスクリプトに渡したい引数を続けることもできます．
 
 ```bash
 python -m shape_commentator src.py
@@ -24,7 +31,6 @@ python -m shape_commentator src.py arg1 arg2 arg3
 ```
 
 2. You get the commented script. For example, you execute shape_commentator to `src.py`, you get `src.py.commented.py`.  
-
 `src.py`というスクリプトに対して実行すると，`src.py.commented.py`が生成されます．
 
 `src.py`
@@ -63,10 +69,11 @@ class A():
 a = A()  #_ A
 ```
 
-### IPython / Jupyter Notebook (Magic Command)
-To use IPython magic command,
+### Usage 2. IPython / Jupyter Notebook (Magic Command)
+![Sample_IPython](https://user-images.githubusercontent.com/13820488/70534467-76321d80-1b9e-11ea-9ff1-e2d9c4140382.png)
 
-IPythonでのマジックコマンドの使い方
+To use IPython / Jupyter Notebook magic command,  
+IPythonやJupyter Notebookでのマジックコマンドの使い方
 ```python
 import shape_commentator
 ```
@@ -96,7 +103,7 @@ a = np.array([1,2,3,4,5,6])
 ```
 
 ## Tested Python Version  
-Test scripts are written in these version of Python.
+Test scripts are written in these version of Python.  
 以下のバージョンがテストされています．
 - 3.8.0
 - 3.7.5
@@ -106,5 +113,5 @@ Test scripts are written in these version of Python.
 - 2.7.17
 
 ## Blog
-作った経緯などを書いた解説ブログはこちらにあります．
+作った経緯などを書いた解説ブログはこちらにあります．  
 [NumPyやPyTorchで使える超便利ツールを作った](http://shiba6v.hatenablog.com/entry/shape_commentator_release)
