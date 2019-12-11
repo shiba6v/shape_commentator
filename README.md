@@ -2,8 +2,8 @@
 [![CircleCI](https://circleci.com/gh/shiba6v/shape_commentator.svg?style=svg)](https://circleci.com/gh/shiba6v/shape_commentator)
 
 ## About  
-You can easily add numpy.ndarray.shape, torch.Size, other shape and type information at runtime to your script as comments.  
-NumPyやPyTorchなどの配列のshape属性や，変数の型の実行時の情報を，ソースコードにコメントとして貼り付けるツールです．
+You can easily add numpy.ndarray.shape, torch.Size, other shape and type information at runtime to your script code as comments.  
+NumPyやPyTorchなどの配列のshape属性や，変数の型の実行時の情報を，スクリプトにコメントとして貼り付けるツールです．
 
 ## Install
 ```
@@ -14,12 +14,12 @@ pip install shape_commentator
 This tool has two types of usage.  
 このツールには2つの使い方があります．
 
-### Execute as a Module
+### Usage 1. Execute this as a Module
 ![Sample_Module](https://user-images.githubusercontent.com/13820488/70629620-9f6daf00-1c6d-11ea-95d1-e4b8adc31a4d.png)
 
-#### Create Commented Script to File
+#### Create Commented Script
 1. Run this script as a module with argument of script name.  Command line arguments to the target script are available.  
-Pythonのモジュールとしてshape_commentatorを実行してください．引数は，スクリプト名の後にスクリプトに渡したい引数を続けてください．
+Pythonのモジュールとしてshape_commentatorを実行してください．引数は，スクリプト名の後にスクリプトに渡したい引数を続けることもできます．
 
 ```bash
 python -m shape_commentator src.py
@@ -68,11 +68,11 @@ class A():
 a = A()  #_ A
 ```
 
-### IPython / Jupyter Notebook (Magic Command)
+### Usage 2. IPython / Jupyter Notebook (Magic Command)
 ![Sample_IPython](https://user-images.githubusercontent.com/13820488/70534467-76321d80-1b9e-11ea-9ff1-e2d9c4140382.png)
 
-To use IPython magic command,  
-IPythonでのマジックコマンドの使い方
+To use IPython / Jupyter Notebook magic command,  
+IPythonやJupyter Notebookでのマジックコマンドの使い方
 ```python
 import shape_commentator
 ```
