@@ -7,8 +7,9 @@ NumPyやPyTorchなどの配列のshape属性や，変数の型の実行時の情
 
 ## Install
 ```
-pip install shape_commentator
+pip install -U shape_commentator
 ```
+-U means upgrading.
 
 ## Usage
 This tool has two types of usage.  
@@ -112,5 +113,5 @@ Test scripts are written in these version of Python.
 - 2.7.17
 
 ## Blog
-作った経緯などを書いた解説ブログはこちらにあります．
+作った経緯などを書いた解説ブログはこちらにあります．  
 [NumPyやPyTorchで使える超便利ツールを作った](http://shiba6v.hatenablog.com/entry/shape_commentator_release)
