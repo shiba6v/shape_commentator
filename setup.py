@@ -3,7 +3,7 @@ import os
 import subprocess
 import io
 
-VERSION = "0.7.0"
+VERSION = "0.8.0"
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 with io.open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
