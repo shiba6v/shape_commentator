@@ -1,41 +1,73 @@
 version: 2.1
 jobs:
-  test36:
+  test3_11:
     docker: &main-version
-      - image: circleci/python:3.6.9
+      - image: cimg/python:3.11.3
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps: &test-steps
       - checkout
       - run:
           name: Install
           command: |
-            sudo pip install numpy ipython mock
-            sudo apt install bats
-            sudo sh tests/install_for_dev.sh
+            pip install numpy ipython mock pytest
+            sudo apt -y update && sudo apt -y install bats
+            sh tests/install_for_dev.sh
       - run: 
           name: DocTest
           command: python -m doctest shape_commentator/main.py
       - run:
           name: BatsTest
           command: bats tests/test_all.bats
-  test38:
+  test3_10:
     docker:
-        - image: circleci/python:3.8.0
+        - image: cimg/python:3.10.11
+          auth:
+            username: $DOCKERHUB_USER
+            password: $DOCKERHUB_PASSWORD
     steps: *test-steps
-  test37:
+  test3_9:
     docker:
-        - image: circleci/python:3.7.5
+        - image: cimg/python:3.9.16
+          auth:
+            username: $DOCKERHUB_USER
+            password: $DOCKERHUB_PASSWORD
     steps: *test-steps
-  test35:
+  test3_8:
     docker:
-        - image: circleci/python:3.5.9
+        - image: cimg/python:3.8.16
+          auth:
+            username: $DOCKERHUB_USER
+            password: $DOCKERHUB_PASSWORD
     steps: *test-steps
-  test34:
+  test3_7:
     docker:
-        - image: circleci/python:3.4.10
+        - image: cimg/python:3.7.16
+          auth:
+            username: $DOCKERHUB_USER
+            password: $DOCKERHUB_PASSWORD
     steps: *test-steps
-  test27:
+  test3_6:
     docker:
-        - image: circleci/python:2.7.17
+        - image: cimg/python:3.6.15
+          auth:
+            username: $DOCKERHUB_USER
+            password: $DOCKERHUB_PASSWORD
+    steps: *test-steps
+  test3_5:
+    docker:
+        - image: cimg/python:3.5.10
+          auth:
+            username: $DOCKERHUB_USER
+            password: $DOCKERHUB_PASSWORD
+    steps: *test-steps
+  test2_7:
+    docker:
+        - image: cimg/python:2.7.18
+          auth:
+            username: $DOCKERHUB_USER
+            password: $DOCKERHUB_PASSWORD
     steps: *test-steps
   deploy:
     docker: *main-version
@@ -57,33 +89,42 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - test36:
-          filters: &filters-test
-              tags:
-                  only: /^v_.*/
-      - test38:
-          filters:
-              *filters-test
-      - test37:
-          filters:
-              *filters-test
-      - test35:
-          filters:
-              *filters-test
-      - test34:
-          filters:
-              *filters-test
-      - test27:
-          filters:
-              *filters-test
+      - test3_11
+      - test3_10
+      - test3_9
+      - test3_8
+      - test3_7
+      - test3_6
+      # - test3_10:
+      #     filters: &filters-test
+      #       branches:
+      #           ignore: /.*/
+      #       tags:
+      #           only: /^v_.*/
+      # - test3_9:
+      #     filters:
+      #         *filters-test
+      # - test3_8:
+      #     filters:
+      #         *filters-test
+      # - test3_7:
+      #     filters:
+      #         *filters-test
+      # - test3_6:
+      #     filters:
+      #         *filters-test
+      - test3_5
+      - test2_7
       - deploy:
           requires: &all-version-requirements
-            - test38
-            - test37
-            - test36
-            - test35
-            - test34
-            - test27
+            - test3_11
+            - test3_10
+            - test3_9
+            - test3_8
+            - test3_7
+            - test3_6
+            - test3_5
+            - test2_7
           filters:
               branches:
                   ignore: /.*/

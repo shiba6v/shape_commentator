@@ -105,11 +105,13 @@ a = np.array([1,2,3,4,5,6])
 ## Tested Python Version  
 Test scripts are written in these version of Python.  
 以下のバージョンがテストされています．
-- 3.8.0
-- 3.7.5
-- 3.6.9
-- 3.5.9
-- 3.4.10
+- 3.11.3
+- 3.10.11
+- 3.9.16
+- 3.8.16
+- 3.7.16
+- 3.6.15
+- 3.5.10
 - 2.7.17
 
 ## Blog
