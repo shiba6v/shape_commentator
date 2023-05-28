@@ -75,7 +75,7 @@ jobs:
       - checkout
       - run:
           name: Install
-          command: sudo pip install twine
+          command: pip install twine
       - run:
           name: PyPI
           command: |
@@ -95,36 +95,9 @@ workflows:
       - test3_8
       - test3_7
       - test3_6
-      # - test3_10:
-      #     filters: &filters-test
-      #       branches:
-      #           ignore: /.*/
-      #       tags:
-      #           only: /^v_.*/
-      # - test3_9:
-      #     filters:
-      #         *filters-test
-      # - test3_8:
-      #     filters:
-      #         *filters-test
-      # - test3_7:
-      #     filters:
-      #         *filters-test
-      # - test3_6:
-      #     filters:
-      #         *filters-test
       - test3_5
       - test2_7
       - deploy:
-          requires: &all-version-requirements
-            - test3_11
-            - test3_10
-            - test3_9
-            - test3_8
-            - test3_7
-            - test3_6
-            - test3_5
-            - test2_7
           filters:
               branches:
                   ignore: /.*/
